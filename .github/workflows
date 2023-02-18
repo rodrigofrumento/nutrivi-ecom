@@ -1,0 +1,30 @@
+name: Merge to Main
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited, ready_for_review]
+
+jobs:
+  merge-to-main:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Merge to Dev
+      uses: docker://danielkraic/github-action-merge@1.0.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        base_branch: 'dev'
+    
+    - name: Merge to Staging
+      uses: docker://danielkraic/github-action-merge@1.0.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        base_branch: 'staging'
+    
+    - name: Merge to Main
+      uses: docker://danielkraic/github-action-merge@1.0.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        base_branch: 'main'
